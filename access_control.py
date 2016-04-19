@@ -10,6 +10,7 @@ import serial
 import time
 import urllib
 import urllib2
+import ConfigParser
 import logging
 import logging.handlers
 from datetime import datetime
@@ -70,20 +71,25 @@ def processId( port, cardId, direction ):
 
         # Let slack know
         logger.info('slack posting in progress...')
-        slackParams = { 
-	        'token' : 'xoxp-4031269372-4894232517-19749775430-08f5b4ab7f',
-	        'channel' : '#door',
-	        'text' : direction + ' ' + name,
-	        'username' : 'doorbot'
-        }
-        try:
-          urllib2.urlopen('https://slack.com/api/chat.postMessage?' + urllib.urlencode(slackParams), timeout=5)
-        except urllib2.URLError, e:
-          logger.error("error sending to slack")
-        except socket.timeout, e:
-          logger.error("timeout sending to slack")
+	config = ConfigParser.ConfigParser()
+	config.read('/home/pi/rfid/access_control/access_control.ini')
+	if 'slack.com' in config.sections():
+		slackParams = { 
+			'token' : config.get('slack.com','Token'),
+			'channel' : '#door',
+			'text' : direction + ' ' + name,
+			'username' : 'doorbot'
+		}
+		try:
+			urllib2.urlopen('https://slack.com/api/chat.postMessage?' + urllib.urlencode(slackParams), timeout=5)
+		except urllib2.URLError, e:
+			logger.error("error sending to slack")
+		except socket.timeout, e:
+			logger.error("timeout sending to slack")
 
-        logger.info('slack posting done.')
+		logger.info('slack posting done.')
+	else:
+		logger.info('please configure slack token in access_control.ini file')
     else:
 
         # Record failure
