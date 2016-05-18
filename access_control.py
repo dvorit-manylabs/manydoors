@@ -59,25 +59,16 @@ def watchForReport( port ):
         elif data is not '':
             reportString += data
 
-def processId( port, cardId, direction ):
-    name =  findNameForId( cardId )
-    if name:
-
-        # Record success
-        recordAccess( cardId, direction, name, "Success: open strike" )
-
-        # Respond to arduino
-        port.write('\x02allowed\x03')
-
-        # Let slack know
-        logger.info('slack posting in progress...')
+def letSlackKnow( text ):
+	# Let slack know
+	logger.info('slack posting in progress...')
 	config = ConfigParser.ConfigParser()
 	config.read('/home/pi/rfid/access_control/access_control.ini')
 	if 'slack.com' in config.sections():
 		slackParams = { 
 			'token' : config.get('slack.com','Token'),
 			'channel' : '#door',
-			'text' : direction + ' ' + name,
+			'text' : text,
 			'username' : 'doorbot'
 		}
 		try:
@@ -90,6 +81,19 @@ def processId( port, cardId, direction ):
 		logger.info('slack posting done.')
 	else:
 		logger.info('please configure slack token in access_control.ini file')
+
+def processId( port, cardId, direction ):
+    name =  findNameForId( cardId )
+    if name:
+
+        # Record success
+        recordAccess( cardId, direction, name, "Success: open strike" )
+
+        # Respond to arduino
+        port.write('\x02allowed\x03')
+
+	letSlackKnow(direction + ' ' + name)
+        
     else:
 
         # Record failure
@@ -97,6 +101,8 @@ def processId( port, cardId, direction ):
 
         # Respond to arduino
         port.write('\x02denied\x03')
+        
+        letSlackKnow( 'unsuccessful ' + direction + ' of unknown fob with id ' + cardId )
 
 def findNameForId( decodedId ):
     with open( idFile, 'r', os.O_NONBLOCK ) as f:
