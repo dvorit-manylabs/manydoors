@@ -20,10 +20,10 @@ Purpose: Record and share tap-in, tap-out actions of members (with a ISO 14443A 
 # Code setup/ service maintenance
 
 * Login to pi using ```ssh pi@door.local``` (ask for location and access credentials on Slack)
-* (if new setup) clone github repo using ```git clone https://github.com/jhpoelen/manydoors.git access_control```
-* (if new setup) create a file ```access_control.ini``` with content like:
-* (if existing) cd access_control
-* (if existing) do whenever you need to do, probably ```git pull --rebase``` to get latest changes
+
+## new setup
+* clone github repo using ```git clone https://github.com/jhpoelen/manydoors.git access_control```
+* create a file ```access_control.ini``` with content like:
 ``` 
 [slack.com]
 Token=yourtoken
@@ -33,3 +33,7 @@ Token=yourtoken
 * edit crontab for synching github repo ```crontab -e```
 * add ```* * * * * cd /home/pi/rfid/access_control && git pull --rebase```
 
+## existing setup
+* go to access_control folder ```cd rfid/access_control```
+*  do whenever you need to do, probably ```git pull --rebase``` to get latest changes, or make config changes
+*  restart service using ```sudo service access_control restart```
