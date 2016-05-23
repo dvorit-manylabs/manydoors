@@ -19,9 +19,11 @@ Purpose: Record and share tap-in, tap-out actions of members (with a ISO 14443A 
 
 # Code setup/ service maintenance
 
-* Login to pi (ask for location and access credentials on Slack)
-* clone github repo using ```git clone https://github.com/jhpoelen/manydoors.git access_control```
-* create a file ```access_control.ini``` with content like:
+* Login to pi using ```ssh pi@door.local``` (ask for location and access credentials on Slack)
+* (if new setup) clone github repo using ```git clone https://github.com/jhpoelen/manydoors.git access_control```
+* (if new setup) create a file ```access_control.ini``` with content like:
+* (if existing) cd access_control
+* (if existing) do whenever you need to do, probably ```git pull --rebase``` to get latest changes
 ``` 
 [slack.com]
 Token=yourtoken
