@@ -102,7 +102,9 @@ def processId( port, cardId, direction ):
         # Respond to arduino
         port.write('\x02denied\x03')
         
-        letSlackKnow( 'unsuccessful ' + direction + ' of unknown fob with id ' + cardId )
+        if cardId > 0:
+        	letSlackKnow( 'unsuccessful ' + direction + ' of unknown fob with id ' + cardId )	
+        
 
 def findNameForId( decodedId ):
     with open( idFile, 'r', os.O_NONBLOCK ) as f:
