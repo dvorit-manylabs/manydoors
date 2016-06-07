@@ -102,7 +102,7 @@ def processId( port, cardId, direction ):
         # Respond to arduino
         port.write('\x02denied\x03')
         
-        if cardId > 0:
+        if cardId.strip() != "0":
         	letSlackKnow( 'unsuccessful ' + direction + ' of unknown fob with id ' + cardId )	
         
 
