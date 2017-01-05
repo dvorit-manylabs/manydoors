@@ -37,10 +37,11 @@ logger.addHandler(handler)
     # `echo -ne '\x02entry:8905409\x03' > /dev/pts/1`
 import subprocess
 subprocess.Popen('socat pty,raw,echo=0 pty,raw,echo=0', shell=True)
+time.sleep(5)
 SERIAL_PORT = os.ttyname(0)     # typically '/dev/pts/0'
 #######################################################
 
-idFile = "/home/pi/rfid/access_control/ids.csv"
+idFile = "/app/ids.csv"
 accessLog = "/data/accessLog.csv"
 
 def watchForReport( port ):
@@ -78,7 +79,7 @@ def letSlackKnow( text ):
 	# Let slack know
 	logger.info('slack posting in progress...')
 	config = ConfigParser.ConfigParser()
-	config.read('/home/pi/rfid/access_control/access_control.ini')
+	config.read('/app/access_control.ini')
 	if 'slack.com' in config.sections():
 		slackParams = {
 			'token' : config.get('slack.com','Token'),
