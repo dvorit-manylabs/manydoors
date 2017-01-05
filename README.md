@@ -73,11 +73,26 @@ Token=yourtoken
 ## dev notes
 
 playing sounds
-* aplay is built in to rpi resin.io image
-* mpg123 is popular and installs ok
-* grab songs from dropbox
-  * wget -O songs.zip https://www.dropbox.com/sh/m502yddp4qr8til/AAAkaJgjKicYjvd8aTA-jQbqa?dl=1; unzip songs.zip
+- learn about rpi ALSA
+  - http://blog.scphillips.com/posts/2013/01/sound-configuration-on-raspberry-pi-with-alsa/
+- aplay is built in to rpi resin.io image
+- mpg123 is popular and installs ok
+- grab songs from dropbox
+  - wget -O songs.zip https://www.dropbox.com/sh/m502yddp4qr8til/AAAkaJgjKicYjvd8aTA-jQbqa?dl=1; unzip songs.zip
 
-* time zone:
-  * try `tzselect` command
-   * `TZ='America/Los_Angeles'; export TZ`
+time zone:
+  - try `tzselect` command
+    - `TZ='America/Los_Angeles'; export TZ`
+  - doesn't seem to be working...
+
+ssh access:
+- get ip from resin.io dashboard
+- ssh root@<ip-address> (pass=resin)
+- TODO change passwd
+- SSH refuse to connect, mentioning MTM worry?
+  - remove key from local machine
+  - ssh-keygen -R <YOUR-DEVICE'S-IP>
+  - https://github.com/resin-io-projects/resin-openssh
+- env variables not showing up in ssh terminal session?
+  -
+  - https://docs.resin.io/runtime/runtime/#using-resin-ssh-from-the-cli

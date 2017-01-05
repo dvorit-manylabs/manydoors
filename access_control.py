@@ -17,6 +17,7 @@ import urllib2
 import ConfigParser
 import logging
 import logging.handlers
+import subprocess
 from datetime import datetime
 
 LOG_FILENAME = "/data/access_control.log"
@@ -112,7 +113,9 @@ def processId( port, cardId, direction ):
         # Respond to arduino
         port.write('\x02allowed\x03')
 
-	letSlackKnow(direction + ' ' + name)
+	#letSlackKnow(direction + ' ' + name)
+    logger.info('DEBUG skipping letSlackKnow(direction + \' \' + name)')
+    playThemesong(direction + ' ' + name)
 
     else:
 
@@ -125,6 +128,29 @@ def processId( port, cardId, direction ):
         if cardId.strip() != "0":
         	letSlackKnow( 'unsuccessful ' + direction + ' of unknown fob with id ' + cardId )
 
+def playThemesong( msg ):
+
+    # say hello/goodbye (blocking)
+    subprocess.Popen("flite '" + msg + "'", shell=True)
+
+    # select <name>.mp3 or default.mp3 if doesn't exist
+    song = '/data/music/default.mp3'
+
+    # if not already playing same song,
+    # play themesong
+    subprocess.Popen("mpg123 '" + song + "'", shell=True)
+
+        # something like
+        #   def play():
+        #       subprocess.Popen("flite 'echo Hello World'", shell=True, stdout=subprocess.PIPE)
+        #       subprocess.Popen("mpg123 /data/music/The_Final_Countdown_kazoo.mp3", shell=True, stdout=subprocess.PIPE)
+        #
+        # see executor
+        #   https://executor.readthedocs.io/en/latest/#api-documentation
+        # Popen deets
+        #   https://jimmyg.org/blog/2009/working-with-python-subprocess.html
+
+    # say inspirational message
 
 def findNameForId( decodedId ):
     with open( idFile, 'r', os.O_NONBLOCK ) as f:

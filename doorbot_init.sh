@@ -19,5 +19,9 @@ if [ -d '/data' ]; then
   fi
 fi
 
+# set the headphone jack volume to 99%
+# currently amixer Volume control is numid=1
+amixer controls | grep Volume | egrep --only-matching 'numid=[0-9]?' | xargs -I_ amixer cset _ 99%
+
 # start access_control.py
 python /app/access_control.py
