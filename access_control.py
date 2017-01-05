@@ -81,8 +81,9 @@ def watchForReport( port ):
 
 def playThemesong( msg ):
 
-    # say hello/goodbye (blocking)
-    logger.info( subprocess.Popen("flite '" + msg + "'", shell=True) )
+    # say hello/goodbye (TODO make blocking)
+    subprocess.Popen("flite '" + msg + "'", shell=True)
+    time.sleep(2)
 
     # select <name>.mp3 or default.mp3 if doesn't exist
     song = '/data/music/default.mp3'
@@ -104,27 +105,27 @@ def playThemesong( msg ):
     # say inspirational message
 
 def letSlackKnow( text ):
-	# Let slack know
-	logger.info('slack posting in progress...')
-	config = ConfigParser.ConfigParser()
-	config.read('/data/access_control.ini') # TODO resin.io env variable instead?
-	if 'slack.com' in config.sections():
-		slackParams = {
-			'token' : config.get('slack.com','Token'),
-			'channel' : '#door',
-			'text' : text,
-			'as_user' : 'true'
-		}
-		try:
-			urllib2.urlopen('https://slack.com/api/chat.postMessage?' + urllib.urlencode(slackParams), timeout=5)
-		except urllib2.URLError, e:
-			logger.error("error sending to slack")
-		except socket.timeout, e:
-			logger.error("timeout sending to slack")
+    # Let slack know
+    logger.info('slack posting in progress...')
+    config = ConfigParser.ConfigParser()
+    config.read('/data/access_control.ini') # TODO resin.io env variable instead?
+    if 'slack.com' in config.sections():
+        slackParams = {
+            'token' : config.get('slack.com','Token'),
+            'channel' : '#door',
+            'text' : text,
+            'as_user' : 'true'
+        }
+        try:
+            urllib2.urlopen('https://slack.com/api/chat.postMessage?' + urllib.urlencode(slackParams), timeout=5)
+        except urllib2.URLError, e:
+            logger.error("error sending to slack")
+        except socket.timeout, e:
+            logger.error("timeout sending to slack")
 
-		logger.info('slack posting done.')
-	else:
-		logger.info('please configure slack token in access_control.ini file')
+        logger.info('slack posting done.')
+    else:
+        logger.info('please configure slack token in access_control.ini file')
 
 def processId( port, cardId, direction ):
     name =  findNameForId( cardId )
@@ -136,9 +137,10 @@ def processId( port, cardId, direction ):
         # Respond to arduino
         port.write('\x02allowed\x03')
 
+        # TODO reenable
         # letSlackKnow(direction + ' ' + name)
         logger.info('DEBUG skipping letSlackKnow(direction + \' \' + name)')
-        playThemesong(direction + ' ' + name)
+        playThemesong(direction + '. Hello, ' + name)
 
     else:
 
