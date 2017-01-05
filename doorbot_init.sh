@@ -20,4 +20,4 @@ if [ -d '/data' ]; then
 fi
 
 # start access_control.py
-python /home/pi/rfid/access_control/access_control.py
+python /app/access_control.py

@@ -4,6 +4,7 @@ FROM resin/raspberrypi-python
 # https://learn.adafruit.com/usb-audio-cards-with-a-raspberry-pi/updating-alsa-config
 RUN apt-get update \
 	&& apt-get install -y \
+	openssh-server \
 	python \
 	alsa-utils \
 	libasound2-dev \
@@ -15,6 +16,13 @@ RUN apt-get update \
 	socat
 	# Remove package lists to free up space
 	# && rm -rf /var/lib/apt/lists/*
+
+# here we set up the config for openSSH.
+# https://github.com/resin-io-projects/resin-openssh/blob/master/Dockerfile.template
+RUN mkdir /var/run/sshd \
+    && echo 'root:resin' | chpasswd \
+    && sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
+    && sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
 
 # access_control.py requires pyserial
 # 	use `RUN pip install -r /requirements.txt` for better container caching
