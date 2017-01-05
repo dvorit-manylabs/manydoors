@@ -22,7 +22,8 @@ RUN apt-get update \
 RUN mkdir /var/run/sshd \
     && echo 'root:resin' | chpasswd \
     && sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-    && sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
+    && sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config \
+		&& echo ". <(xargs -0 bash -c 'printf \"export %q\n\" \"\$@\"' -- < /proc/1/environ)" >> /root/.profile
 
 # access_control.py requires pyserial
 # 	use `RUN pip install -r /requirements.txt` for better container caching

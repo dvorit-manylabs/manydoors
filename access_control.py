@@ -2,6 +2,10 @@
 # Copyright 2015 Manylabs - MIT License
 # Author: Elliott Dicus
 #
+# Copyright 2016 Manylabs - MIT License
+# Author: Mac Cowell
+# - port to docker/resin.io; add TTS + themesong system
+#
 # Script to respond to authorization requests from an Arduino powered RFID
 # reader
 
@@ -79,7 +83,7 @@ def letSlackKnow( text ):
 	# Let slack know
 	logger.info('slack posting in progress...')
 	config = ConfigParser.ConfigParser()
-	config.read('/app/access_control.ini')
+	config.read('/data/access_control.ini') # TODO resin.io env variable instead?
 	if 'slack.com' in config.sections():
 		slackParams = {
 			'token' : config.get('slack.com','Token'),

@@ -49,21 +49,21 @@ curl -d 'token=<YOUR-BOT-AUTH-KEY-HERE>' \
 ```
 
 ### setup raspberry pi
-* clone github repo using ```git clone https://github.com/jhpoelen/manydoors.git access_control```
-* create a file ```access_control.ini``` with content like:
+* ~~clone github repo using ```git clone https://github.com/jhpoelen/manydoors.git access_control```~~
+* create a file ```/data/access_control.ini``` with content like:
 ```
 [slack.com]
 Token=yourtoken
 ```
-* create symlink to start service ```sudo ln -s /home/pi/rfid/access_control/access_control.conf /etc/init/access_control.conf```
+~~* create symlink to start service ```sudo ln -s /home/pi/rfid/access_control/access_control.conf /etc/init/access_control.conf```
 * restart service using ```sudo service access_control restart```
 * edit crontab for synching github repo ```crontab -e```
-* add ```* * * * * cd /home/pi/rfid/access_control && git pull --rebase```
+* add ```* * * * * cd /home/pi/rfid/access_control && git pull --rebase```~~
 
 ## existing setup
-* go to access_control folder ```cd rfid/access_control```
+~~* go to access_control folder ```cd /data/access_control```
 *  do whenever you need to do, probably ```git pull --rebase``` to get latest changes, or make config changes
-*  restart service using ```sudo service access_control restart```
+*  restart service using ```sudo service access_control restart```~~
 
 ## references
 * Slack [web API reference](https://api.slack.com/web) (what's we're using)
@@ -77,3 +77,7 @@ playing sounds
 * mpg123 is popular and installs ok
 * grab songs from dropbox
   * wget -O songs.zip https://www.dropbox.com/sh/m502yddp4qr8til/AAAkaJgjKicYjvd8aTA-jQbqa?dl=1; unzip songs.zip
+
+* time zone:
+  * try `tzselect` command
+   * `TZ='America/Los_Angeles'; export TZ`
