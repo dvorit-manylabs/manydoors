@@ -12,7 +12,7 @@ RUN apt-get update \
 	unzip \
 	festival \
 	festvox-don festvox-kallpc16k festvox-kdlpc16k festvox-rablpc16k \
-	socat \
+	socat
 	# Remove package lists to free up space
 	# && rm -rf /var/lib/apt/lists/*
 
