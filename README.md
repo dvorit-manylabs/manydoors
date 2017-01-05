@@ -11,20 +11,47 @@ Purpose: Record and share tap-in, tap-out actions of members (with a ISO 14443A 
 4. See your enter/exit actions on the Slack Channel
 
 ## features
-
 1. use rfid to record entry/exit at the manylabs door.
 2. automatically updates ids from this github repo when new ones are available
 3. keeps a local event log on the pi
 4. posts a enter/exit events on the [#door channel of manylabs slack](https://manylabs.slack.com/archives/door/)
+5. speaks entry/exit message at door
+6. *BONUS*: plays silly theme song on entry
 
-# Code setup/ service maintenance
+## roadmap
+* switch from slack web api to streaming bot api; run hubot
+* hubot server on RPI
+* hubot actions to add/remove tokens
+* hubot actions to upload & select silly theme songs
 
+## code setup/ service maintenance
 * Login to pi using ```ssh pi@door.local``` (ask for location and access credentials on Slack)
 
+
 ## new setup
+
+### setup slack bot and get token
+* create a new slack bot: visit [Manylabs Slack - Custom Integrations](https://manylabs.slack.com/apps/build/custom-integration) and select "Bots"
+  * name it `doorbot`
+  * save the auth token (note: should begin with `xoxb-`)
+  * provide silly user icon
+* from your own account within slack:
+  * go to the [door](https://manylabs.slack.com/messages/door/) channel (join if necessary)
+  * invite our new bot in: `/join @doorbot`
+* check that doorbot auth key works:
+```
+curl -d 'token=<YOUR-BOT-AUTH-KEY-HERE>' \
+  -d 'channel=#door' \
+  -d 'text=web API chat.postMessage test spaces doorbot-test' \
+  -d 'as_user=true' \
+  -d 'pretty=1' \
+  https://slack.com/api/chat.postMessage
+```
+
+### setup raspberry pi
 * clone github repo using ```git clone https://github.com/jhpoelen/manydoors.git access_control```
 * create a file ```access_control.ini``` with content like:
-``` 
+```
 [slack.com]
 Token=yourtoken
 ```
@@ -37,3 +64,16 @@ Token=yourtoken
 * go to access_control folder ```cd rfid/access_control```
 *  do whenever you need to do, probably ```git pull --rebase``` to get latest changes, or make config changes
 *  restart service using ```sudo service access_control restart```
+
+## references
+* Slack [web API reference](https://api.slack.com/web) (what's we're using)
+* Slack `chat.postMessage` [api documentation](https://api.slack.com/methods/chat.postMessage)
+
+
+## dev notes
+
+playing sounds
+* aplay is built in to rpi resin.io image
+* mpg123 is popular and installs ok
+* grab songs from dropbox
+  * wget -O songs.zip https://www.dropbox.com/sh/m502yddp4qr8til/AAAkaJgjKicYjvd8aTA-jQbqa?dl=1; unzip songs.zip

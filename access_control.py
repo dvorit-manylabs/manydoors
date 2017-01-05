@@ -15,7 +15,7 @@ import logging
 import logging.handlers
 from datetime import datetime
 
-LOG_FILENAME = "/home/pi/rfid/access_control/access_control.log"
+LOG_FILENAME = "/data/access_control.log"
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 handler = logging.handlers.TimedRotatingFileHandler(LOG_FILENAME, when="midnight", backupCount=3)
@@ -23,10 +23,25 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-SERIAL_PORT = "/dev/ttyACM0"
+# may need to apt-get install pyserial
+    # problems?
+    # see https://forums.resin.io/t/problems-connecting-to-usb-serialport-from-container/24/2
+#SERIAL_PORT = "/dev/ttyACM0"
+
+#######################################################
+# testing with ptmx pseudoterminal
+    # see http://stackoverflow.com/questions/2174071/how-to-use-dev-ptmx-for-create-a-virtual-serial-port#15095316
+    # can't figure out how to communicate (container issue? no tty...)
+# use socat to create virtual serial ports; assuming 0, 1 file descriptors
+    # simulate card read with (i hope):
+    # `echo -ne '\x02entry:8905409\x03' > /dev/pts/1`
+import subprocess
+subprocess.Popen('socat pty,raw,echo=0 pty,raw,echo=0', shell=True)
+SERIAL_PORT = os.ttyname(0)     # typically '/dev/pts/0'
+#######################################################
 
 idFile = "/home/pi/rfid/access_control/ids.csv"
-accessLog = "/home/pi/rfid/access_control/accessLog.csv"
+accessLog = "/data/accessLog.csv"
 
 def watchForReport( port ):
     reportString = ''
@@ -65,11 +80,11 @@ def letSlackKnow( text ):
 	config = ConfigParser.ConfigParser()
 	config.read('/home/pi/rfid/access_control/access_control.ini')
 	if 'slack.com' in config.sections():
-		slackParams = { 
+		slackParams = {
 			'token' : config.get('slack.com','Token'),
 			'channel' : '#door',
 			'text' : text,
-			'username' : 'doorbot'
+			'as_user' : 'true'
 		}
 		try:
 			urllib2.urlopen('https://slack.com/api/chat.postMessage?' + urllib.urlencode(slackParams), timeout=5)
@@ -93,7 +108,7 @@ def processId( port, cardId, direction ):
         port.write('\x02allowed\x03')
 
 	letSlackKnow(direction + ' ' + name)
-        
+
     else:
 
         # Record failure
@@ -101,10 +116,10 @@ def processId( port, cardId, direction ):
 
         # Respond to arduino
         port.write('\x02denied\x03')
-        
+
         if cardId.strip() != "0":
-        	letSlackKnow( 'unsuccessful ' + direction + ' of unknown fob with id ' + cardId )	
-        
+        	letSlackKnow( 'unsuccessful ' + direction + ' of unknown fob with id ' + cardId )
+
 
 def findNameForId( decodedId ):
     with open( idFile, 'r', os.O_NONBLOCK ) as f:
@@ -144,6 +159,7 @@ def sigterm_handler(_signo, _stack_frame):
 if __name__ == "__main__":
 
     # Open Serial Port
+    # https://pyserial.readthedocs.io/en/latest/shortintro.html#opening-serial-ports
     portOpen = False
     while not portOpen:
         try:
