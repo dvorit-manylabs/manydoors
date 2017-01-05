@@ -38,7 +38,7 @@ logger.addHandler(handler)
 import subprocess
 subprocess.Popen('socat pty,raw,echo=0 pty,raw,echo=0', shell=True)
 time.sleep(5)
-SERIAL_PORT = os.ttyname(0)     # typically '/dev/pts/0'
+SERIAL_PORT = '/dev/pts/0'    # typically '/dev/pts/0'
 #######################################################
 
 idFile = "/app/ids.csv"
