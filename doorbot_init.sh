@@ -10,6 +10,8 @@
 
 # if /data exists we are executing on RPI
 # if /data/music doesn't exist this is fresh deploy
+#   consider following resin.io best-practices for checking
+#     execution context https://resin.io/blog/where-is-my-code-running/
 #   note: /data persists across container start/stop
 if [ -d '/data' ]; then
   if [ ! -d '/data/music' ]; then

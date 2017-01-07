@@ -173,6 +173,8 @@ def recordAccess(cardId="", direction="", name="", detail=""):
 
         # TODO: Record Survey responses
 
+        # TODO: record id, time latest entry in last_entry.log (for themesong)
+
         # Lines are in the following format:
         # Timestamp, CardId, Direction, Name, Detail
         line = "%s, %s, %s, %s, %s\n" % ( str(datetime.now()), cardId, direction, name, detail )
