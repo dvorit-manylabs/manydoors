@@ -80,6 +80,15 @@ playing sounds
 - grab songs from dropbox
   - wget -O songs.zip https://www.dropbox.com/sh/m502yddp4qr8til/AAAkaJgjKicYjvd8aTA-jQbqa?dl=1; unzip songs.zip
 
+- voice
+  - https://github.com/MycroftAI/mimic
+  - better flite / festvox voices
+  - https://ubuntuforums.org/showthread.php?t=751169
+
+- fortune, motd, qotd, joke...
+  - `apt-get install fortunes fortune-mod`
+  - `printf "%s" "$(/usr/games/fortune -n 140 wisdom)" | flite `
+
 time zone:
   - try `tzselect` command
     - `TZ='America/Los_Angeles'; export TZ`
@@ -96,3 +105,16 @@ ssh access:
 - env variables not showing up in ssh terminal session?
   -
   - https://docs.resin.io/runtime/runtime/#using-resin-ssh-from-the-cli
+
+
+## setting up AWS Polly for text-to-speech
+1. Set up your AWS account and a AWS IAM account for [Amazon AWS Polly](https://aws.amazon.com/polly/) text-to-speech. See [Setting Up](http://docs.aws.amazon.com/polly/latest/dg/setting-up.html) section of the Amazon Polly docs or steps 1-2 of the [AWS S3 tutorial](https://aws.amazon.com/getting-started/tutorials/backup-to-s3-cli/) tutorial.
+  - I used `brew install awscli` to get the command-line tools
+  - create an AWS IAM user named 'doorbot'. Check the box for `programmatic access`. Leave `AWS management console` unchecked.
+  - and attach the `AmazonPollyReadOnlyAccess` policy
+  - note the values for the Access Key and Secret Access Key for the next step
+2. [Configure environment variables](https://boto3.readthedocs.io/en/latest/guide/configuration.html#environment-variable-configuration) for the access keys using the [resin.io dashboard](https://dashboard.resin.io/apps/)
+  - `AWS_ACCESS_KEY_ID`
+  - `AWS_SECRET_ACCESS_KEY`
+  - `AWS_DEFAULT_REGION`: `us-west-2`
+    - note: currently (Jan 2017) Polly is only available in US East (N. Virginia), US East (Ohio), US West (Oregon), and EU (Ireland) - see faq: [Q. In which regions is the service available?](https://aws.amazon.com/polly/faqs/)
