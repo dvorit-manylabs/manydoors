@@ -20,7 +20,8 @@ RUN apt-get update \
 		flite \
 		unzip \
 		socat \
-		fortunes fortune-mod
+		fortunes fortune-mod \
+	&& ln -s /usr/games/fortune /usr/local/bin
 	# Remove package lists to free up space
 	# && rm -rf /var/lib/apt/lists/*
 
