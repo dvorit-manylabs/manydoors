@@ -6,7 +6,7 @@ Purpose: Record and share tap-in, tap-out actions of members (with a ISO 14443A 
 
 ## Getting Started
 1. Get a keyfob or keycard (if you have one already, you can use it)
-2. Add your rfid number and name/alias to https://github.com/jhpoelen/manydoors/blob/master/ids.csv (ask for help if this is hard for you)
+2. Add your rfid number and name/alias to https://github.com/manylabs/manydoors/blob/master/ids.csv (ask for help if this is hard for you)
 3. Tap-in and Tap-out when entering and leaving ManyLabs by placing your keyfob on the inside/outside facing coils on the door.
 4. See your enter/exit actions on the Slack Channel
 
@@ -22,7 +22,7 @@ Purpose: Record and share tap-in, tap-out actions of members (with a ISO 14443A 
 * Login to pi using ```ssh pi@door.local``` (ask for location and access credentials on Slack)
 
 ## new setup
-* clone github repo using ```git clone https://github.com/jhpoelen/manydoors.git access_control```
+* clone github repo using ```git clone https://github.com/manylabs/manydoors.git access_control```
 * create a file ```access_control.ini``` with content like:
 ``` 
 [slack.com]
