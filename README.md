@@ -24,7 +24,7 @@ Purpose: Record and share tap-in, tap-out actions of members (with a ISO 14443A 
 ## new setup
 * clone github repo using ```git clone https://github.com/manylabs/manydoors.git access_control```
 * create a file ```access_control.ini``` with content like:
-``` 
+```
 [slack.com]
 Token=yourtoken
 ```
@@ -37,3 +37,9 @@ Token=yourtoken
 * go to access_control folder ```cd rfid/access_control```
 *  do whenever you need to do, probably ```git pull --rebase``` to get latest changes, or make config changes
 *  restart service using ```sudo service access_control restart```
+
+## setup TTY
+- install requirements (do this once):
+  - `sudo ./init_tty.sh`
+- add daily jobs to crontab?
+- or use git-hooks?

@@ -1,5 +1,6 @@
 .ftpconfig
 .DS_Store
+ids_short.csv
 accessLog.csv
 access_control.log
 access_control.ini
