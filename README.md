@@ -31,12 +31,24 @@ Token=yourtoken
 * create symlink to start service ```sudo ln -s /home/pi/rfid/access_control/access_control.conf /etc/init/access_control.conf```
 * restart service using ```sudo service access_control restart```
 * edit crontab for synching github repo ```crontab -e```
-* add ```* * * * * cd /home/pi/rfid/access_control && git pull --rebase```
+* add ```* * * * * cd /home/pi/rfid/access_control && git pull --rebase >> /home/pi/rfid/cronlog 2>&1```
 
 ## existing setup
 * go to access_control folder ```cd rfid/access_control```
 *  do whenever you need to do, probably ```git pull --rebase``` to get latest changes, or make config changes
 *  restart service using ```sudo service access_control restart```
+
+## Raspberry Pi configuration
+- currently doorbot uses [Adafruit Occidentalis](https://github.com/adafruit/Adafruit-Occidentalis) rpi setup helper;
+  - to configure network, edit file `/boot/occidentalis.txt`
+  - this file can be edited directly on the SD card from another computer if network access is totally lost
+- problems? check `/var/log/syslog`
+  ```
+  pi@door ~ $ sudo ifdown wlan0
+  pi@door ~ $ sudo ifup wlan0  && tail -f /var/log/syslog
+    # or
+  localbox $ ssh pi@door.local "tail -f /var/log/syslog" 
+  ```
 
 ## setup TTY
 - install requirements (do this once):
