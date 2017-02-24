@@ -24,14 +24,21 @@ Purpose: Record and share tap-in, tap-out actions of members (with a ISO 14443A 
 ## new setup
 * clone github repo using ```git clone https://github.com/manylabs/manydoors.git access_control```
 * create a file ```access_control.ini``` with content like:
-``` 
+```
 [slack.com]
 Token=yourtoken
 ```
 * create symlink to start service ```sudo ln -s /home/pi/rfid/access_control/access_control.conf /etc/init/access_control.conf```
 * restart service using ```sudo service access_control restart```
 * edit crontab for synching github repo ```crontab -e```
-* add ```* * * * * cd /home/pi/rfid/access_control && git pull --rebase```
+* add the following:
+```
+# constantly try to update repo (mostly for ids.csv changes)
+* * * * * cd /home/pi/rfid/access_control && git pull --rebase
+
+# nightly reboot at 4 am
+0 4 * * * shutdown -r now
+```
 
 ## existing setup
 * go to access_control folder ```cd rfid/access_control```
