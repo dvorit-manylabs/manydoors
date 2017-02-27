@@ -39,6 +39,8 @@ Token=yourtoken
 # nightly reboot at 4 am
 0 4 * * * shutdown -r now
 ```
+* setup rpi hardware watchdog to reboot system when it hangs
+* - http://blog.ricardoarturocabral.com/2013/01/auto-reboot-hung-raspberry-pi-using-on.html
 
 ## existing setup
 * go to access_control folder ```cd rfid/access_control```
