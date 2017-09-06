@@ -2,17 +2,19 @@
 # along with the name of the card holder. Lines that begin with a # are ignored.
 # No need to include leading zeros at the beginning of the number, stripped
 # LINE FORMAT: Card ID number, Name
-# 8905409, Elliott - Missing
-# 8867067, Jean - Missing
-# 1946775, Angela - Missing
-# 1972574, Dav - Missing
-# 7139500, Ethan - Missing
-# 8842421, Ariel - Missing
-# 4417564, Jonathan - Missing
-# 4512951, Adam - Missing
-# 6479229, Mary - Missing
+# 8905409, Elliott - Not Returned
+# 8867067, Jean - Not Returned
+# 1946775, Angela - Not Returned
+# 1972574, Dav - Not Returned
+# 7139500, Ethan - Not Returned
+# 8842421, Ariel - Not Returned
+# 4417564, Jonathan - Not Returned
+# 4512951, Adam - Not Returned
+# 6479229, Mary - Not Returned
+# 8778028, Linda K - Not Returned
+# 9579982, Dan L - Not Returned
+# 6001634, Ken M - Not Returned
 # 6231045, Lis - Owned?
-6001634, Ken M
 4821422, Peter S
 1965576, David C
 4817360, Mac C
@@ -34,8 +36,6 @@
 8879347, David G
 4504851, Adrian L
 8888524, Clarissa R
-8778028, Linda K
-9579982, Dan L
 8799625, Esteban P
 1983596, Daniel E
 8758986, Marc R
